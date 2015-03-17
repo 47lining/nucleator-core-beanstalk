@@ -1,0 +1,25 @@
+# Copyright 2015 47Lining LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+
+- name: Use action plugin to deploy to beanstalk
+  beanstalk_deploy:
+    environment_name: "{{ environment_name }}"
+    application_name: "{{ namespaced_app_name }}"
+    application_version: "{{ application_version }}"
+    application_url: "{{ application_url }}"
+    region: "{{ cage_names[cage_name]['region'] }}"
+    bucket_name: "{{ account_setup_stack['stack_outputs']['TemplateBucketName'] }}"
+    key_prefix: "{{ customer_name ~ '/' ~ cage_name ~ '/' ~ 'artifacts' }}"
+    config_file: "{{nucleator_configuration_dir}}/templates/{{customer_name}}/{{cage_name}}/stackset/{{stackset_name}}/{{stackset_instance_name}}-nucleator.config"
