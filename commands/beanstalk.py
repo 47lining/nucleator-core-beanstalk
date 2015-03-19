@@ -49,6 +49,7 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--customer", required=True, action=ValidateCustomerAction, help="Name of customer from nucleator config")
         beanstalk_provision.add_argument("--cage", required=True, help="Name of cage from nucleator config")
         beanstalk_provision.add_argument("--type", required=True, help="Type of beanstalk to provision (python or java)")
+        beanstalk_provision.add_argument("--tier", required=False, help="Tier of beanstalk to provision (webserver or worker)")
         beanstalk_provision.add_argument("--app_name", required=True, help="Name of beanstalk application to provision")
         beanstalk_provision.add_argument("--beanstalk_instance_type", required=False, help="EC2 instance type to provision")
         beanstalk_provision.add_argument("--database_instance_type", required=False, help="Database instance type to provision (default: None)")
@@ -150,6 +151,13 @@ class Beanstalk(Command):
                 maxscale = int(maxscale)
             except ValueError:
                 raise ValueError("maxscale must be an integer")
+
+        tier = kwargs.get("tier", None)
+        if tier is not None:
+            if tier == 'worker' or tier == 'webserver':
+                extra_vars["beanstalk_tiertype_arg"] = tier
+            else:
+                ValueError("tier must be 'worker' or 'webserver'")
 
         if maxscale < minscale:
             raise ValueError("maxscale must be equal to or greater than minscale")

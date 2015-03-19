@@ -81,6 +81,21 @@
             "Type": "Number",
             "Default": "4"
         },
+        "BeanstalkTierType": {
+            "Description": "The tier type of this beanstalk: Standard or SQS/HTTP",
+            "Type": "String",
+            "Default": "Standard",
+        },
+        "BeanstalkTierName": {
+            "Description": "The tier name of this beanstalk: Worker or WebServer",
+            "Type": "String",
+            "Default": "WebServer",
+        },
+        "BeanstalkTierVersion": {
+            "Description": "The tier version of this beanstalk",
+            "Type": "String",
+            "Default": "1.0",
+        },
         "DatabaseInstanceType": {
             "Description": "RDS EC2 instance type",
             "Type": "String",
@@ -428,6 +443,11 @@
                             " Application"
                         ]
                     ]
+                },
+                "Tier" : {
+                  "Type" : { "Ref": "BeanstalkTierType" },
+                  "Name" : { "Ref": "BeanstalkTierName" },
+                  "Version" : { "Ref": "BeanstalkTierVersion" },
                 },
                 "TemplateName": { "Ref": "{{configuration_template_name}}" },
                 "VersionLabel": { "Ref": "SampleVersion" },
