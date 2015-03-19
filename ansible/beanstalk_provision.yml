@@ -33,3 +33,4 @@
     application_version: "0.0"
     visibility_timeout: "{{visibility_timeout}}"
     inactivity_timeout: "{{inactivity_timeout}}"
+    beanstalk_tiertype_arg: "{{beanstalk_tiertype_arg}}"
