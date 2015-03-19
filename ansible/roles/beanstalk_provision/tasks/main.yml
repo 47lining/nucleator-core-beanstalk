@@ -29,6 +29,17 @@
   debug: var=role_credentials
   when: debug_credentials
 
+# The nucleator command parsing checks for proper values; could be incorrect if playbook run directly
+- name: Set paramenters for webserver beanstalk type
+  set_fact:
+    beanstalk_tier: beanstalk_tier_type.frontend
+  when: not beanstalk_tiertype_arg is defined or beanstalk_tiertype_arg == 'webserver'
+
+- name: Set paramenters for worker beanstalk type
+  set_fact:
+    beanstalk_tier: beanstalk_tier_type.backend
+  when: beanstalk_tiertype_arg == 'worker'
+
 - name: "provision stackset via cloudformation"
   connection: local
   cloudformation:
@@ -54,6 +65,9 @@
       BeanstalkInstanceType: "{{beanstalk_instance_type}}"
       BeanstalkAutoscaleMinSize: "{{beanstalk_autoscale_min_size}}"
       BeanstalkAutoscaleMaxSize: "{{beanstalk_autoscale_max_size}}"
+      BeanstalkTierName: "{{beanstalk_tier.name}}"
+      BeanstalkTierType: "{{beanstalk_tier.type}}"
+      BeanstalkTierVersion: "{{beanstalk_tier.version}}"
       DatabaseInstanceType: "{{database_instance_type}}"
       DatabaseMultiAZ: "{{database_multi_az}}"
       DatabaseStorage: "{{database_storage}}"
