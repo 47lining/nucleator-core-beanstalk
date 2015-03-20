@@ -84,17 +84,17 @@
         "BeanstalkTierType": {
             "Description": "The tier type of this beanstalk: Standard or SQS/HTTP",
             "Type": "String",
-            "Default": "Standard",
+            "Default": "Standard"
         },
         "BeanstalkTierName": {
             "Description": "The tier name of this beanstalk: Worker or WebServer",
             "Type": "String",
-            "Default": "WebServer",
+            "Default": "WebServer"
         },
         "BeanstalkTierVersion": {
             "Description": "The tier version of this beanstalk",
             "Type": "String",
-            "Default": "1.0",
+            "Default": "1.0"
         },
         "DatabaseInstanceType": {
             "Description": "RDS EC2 instance type",
@@ -210,7 +210,7 @@
                 ]
             }
         },
-	{{ beanstalk.cage_extension_resources | to_json_fragment }},
+        {{ beanstalk.cage_extension_resources | to_json_fragment }},
         "BeanstalkNatSecurityGroupFtpIngress": {
             "Type": "AWS::EC2::SecurityGroupIngress",
             "Properties": {
@@ -264,11 +264,11 @@
                             {
                                 "Ref": "ApplicationName"
                             },
-			    "{{cage_name}}",
-			    "{{customer_name}}"
+                            "{{cage_name}}",
+                            "{{customer_name}}"
                         ]
                     ]
-		},
+		        },
                 "Description": {
                     "Fn::Join": [
                         "-",
@@ -447,48 +447,14 @@
                 "Tier" : {
                   "Type" : { "Ref": "BeanstalkTierType" },
                   "Name" : { "Ref": "BeanstalkTierName" },
-                  "Version" : { "Ref": "BeanstalkTierVersion" },
+                  "Version" : { "Ref": "BeanstalkTierVersion" }
                 },
                 "TemplateName": { "Ref": "{{configuration_template_name}}" },
                 "VersionLabel": { "Ref": "SampleVersion" },
-                "CNAMEPrefix": {
-                    "Fn::Join": [
-                        "-",
-                        [
-                            "elb",
-                            {
-                                "Ref": "ApplicationName"
-                            },
-                            {
-                                "Ref": "CageName"
-                            },
-                            "{{customer_domain | replace(".", "-")}}"
-                        ]
-                    ]
-                }
+                {{ beanstalk.cnameprefix | to_json_fragment }}
             }
         },
-
-
-        "BeanstalkDnsRecord": {
-            "Type": "AWS::Route53::RecordSet",
-            "Properties": {
-                "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
-                "Comment": "A record for beanstalk instance.",
-                "Name": "{{application_name}}.{{cage_name}}.{{customer_domain}}",
-                "Type": "CNAME",
-                "TTL": "300",
-                "ResourceRecords": [
-                    {
-                		"Fn::GetAtt": [
-                    		"BeanstalkEnv",
-                    		"EndpointURL"
-                		]
-            		}
-                ]
-            }
-        },
-
+        {{ beanstalk.dnsrecord | to_json_fragment }},
         "DatabaseSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Condition" : "CreateDatabaseResources",
@@ -546,7 +512,7 @@
                         "Key": "NucleatorGroup",
                         "Value": "NucleatorBeanstalk"
                     },
-        		    {{ nucleator_common_tags | to_json_fragment }}
+                    {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -690,15 +656,7 @@
                 ]
             }
         },
-        "BeanstalkEndpoint": {
-            "Description": "Endpoint for the Beanstalk Environment",
-            "Value": {
-                "Fn::GetAtt": [
-                    "BeanstalkEnv",
-                    "EndpointURL"
-                ]
-            }
-        },
+        {{ beanstalk.endpoint | to_json_fragment }},
         "BeanstalkSecurityGroupId": {
             "Description": "Id of security group that includes all beanstalk instances",
             "Value": {

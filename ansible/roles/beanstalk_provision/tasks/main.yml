@@ -32,13 +32,13 @@
 # The nucleator command parsing checks for proper values; could be incorrect if playbook run directly
 - name: Set paramenters for webserver beanstalk type
   set_fact:
-    beanstalk_tier: beanstalk_tier_type.frontend
+    beanstalk_tier: "{{beanstalk_tier_type.frontend}}"
   when: not beanstalk_tiertype_arg is defined or beanstalk_tiertype_arg == 'webserver'
 
 - name: Set paramenters for worker beanstalk type
   set_fact:
-    beanstalk_tier: beanstalk_tier_type.backend
-  when: beanstalk_tiertype_arg == 'worker'
+    beanstalk_tier: "{{beanstalk_tier_type.backend}}"
+  when: beanstalk_tiertype_arg is defined and beanstalk_tiertype_arg == 'worker'
 
 - name: "provision stackset via cloudformation"
   connection: local

@@ -123,6 +123,13 @@ role_specification:
                 - "rds:DescribeDBInstances"
                 - "rds:CreateDBInstance"
               Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:CreateQueue"
+                - "sqs:SendMessage"
+                - "sqs:ReadMessage"
+                - "sqs:GetQueueAttributes"
+              Resource: '*'
 
   - role_name: NucleatorBeanstalkInventoryManager
     trust_policy:
