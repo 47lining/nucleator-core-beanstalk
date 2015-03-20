@@ -102,7 +102,7 @@
             "Default": "{{default_rds_instance_type}}",
             "AllowedValues": [
                 {{supported_rds_instance_types | to_json_fragment()}},
-		"None"
+                "None"
             ],
             "ConstraintDescription": "must be a valid RDS DB instance type, or \"None\"."
         },
@@ -167,14 +167,14 @@
 	}
     },
     "Resources": {
-    	"InstanceProfile" : {
-	    "Type" : "AWS::IAM::InstanceProfile",
-	    "Condition" : "CreateInstanceProfile",
-	    "Properties" : {
-		"Path" : "/",
-		"Roles" : { "Ref": "ServiceRole" }
-	    }
-	},
+        "InstanceProfile" : {
+            "Type" : "AWS::IAM::InstanceProfile",
+            "Condition" : "CreateInstanceProfile",
+            "Properties" : {
+                "Path" : "/",
+                "Roles" : { "Ref": "ServiceRole" }
+            }
+        },
         "BeanstalkSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
@@ -451,10 +451,10 @@
                 },
                 "TemplateName": { "Ref": "{{configuration_template_name}}" },
                 "VersionLabel": { "Ref": "SampleVersion" },
-                {{ beanstalk.cnameprefix | to_json_fragment }}
+                {{ beanstalk_cnameprefix }}
             }
         },
-        {{ beanstalk.dnsrecord | to_json_fragment }},
+        {{ beanstalk_dnsrecord }},
         "DatabaseSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Condition" : "CreateDatabaseResources",
@@ -656,7 +656,7 @@
                 ]
             }
         },
-        {{ beanstalk.endpoint | to_json_fragment }},
+        {{ beanstalk_endpoint }},
         "BeanstalkSecurityGroupId": {
             "Description": "Id of security group that includes all beanstalk instances",
             "Value": {

@@ -33,11 +33,17 @@
 - name: Set paramenters for webserver beanstalk type
   set_fact:
     beanstalk_tier: "{{beanstalk_tier_type.frontend}}"
+    beanstalk_dnsrecord: "{{ beanstalk.dnsrecord | to_json_fragment }}"
+    beanstalk_cnameprefix: "{{ beanstalk.cnameprefix | to_json_fragment }}"
+    beanstalk_endpoint: "{{ beanstalk.endpoint | to_json_fragment }}"
   when: not beanstalk_tiertype_arg is defined or beanstalk_tiertype_arg == 'webserver'
 
 - name: Set paramenters for worker beanstalk type
   set_fact:
     beanstalk_tier: "{{beanstalk_tier_type.backend}}"
+    beanstalk_dnsrecord:
+    beanstalk_cnameprefix:
+    beanstalk_endpoint:
   when: beanstalk_tiertype_arg is defined and beanstalk_tiertype_arg == 'worker'
 
 - name: "provision stackset via cloudformation"
