@@ -678,13 +678,9 @@
                 ]
             }
         },
-<<<<<<< 40f6a2fd544d034a08156f057115d7f61ca08792
         {% if beanstalk_endpoint is defined %}
             {{ beanstalk_endpoint }},
         {% endif %}
-=======
-        {{ beanstalk.endpoint | to_json_fragment }},
->>>>>>> move worker vs webserver diffs to vars
         "BeanstalkSecurityGroupId": {
             "Description": "Id of security group that includes all beanstalk instances",
             "Value": {
