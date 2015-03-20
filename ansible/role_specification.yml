@@ -15,14 +15,29 @@
 role_specification:
   - role_name: NucleatorBeanstalkServiceRunner
     trust_policy:
-      Version : "2008-10-17"
-      Statement :
-        - Effect : Allow
-          Sid : NucleatorBeanstalkServiceRunnerTrustPolicy
-          Principal :
-            Service : ec2.amazonaws.com
-          Action : sts:AssumeRole
+      Version: "2008-10-17"
+      Statement:
+        - Effect: Allow
+          Sid: NucleatorBeanstalkServiceRunnerTrustPolicy
+          Principal:
+            Service: ec2.amazonaws.com
+          Action: sts:AssumeRole
     access_policies:
+      - policy_name: NucleatorBeanstalkServiceAccessPolicy
+        policy_document:
+          Statement:
+            - Effect: Allow
+              Action:
+                - "dynamodb:*"
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:*"
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - "cloudwatch:*"
+              Resource: '*'
   - role_name: NucleatorBeanstalkProvisioner
     trust_policy:
       Version : "2008-10-17"
@@ -129,7 +144,7 @@ role_specification:
                 - "sqs:SendMessage"
                 - "sqs:ReadMessage"
                 - "sqs:GetQueueAttributes"
-              Resource: '*'
+              Resource: arn:aws:sqs:*
 
   - role_name: NucleatorBeanstalkInventoryManager
     trust_policy:

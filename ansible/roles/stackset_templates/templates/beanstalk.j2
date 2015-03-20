@@ -450,11 +450,15 @@
                   "Version" : { "Ref": "BeanstalkTierVersion" }
                 },
                 "TemplateName": { "Ref": "{{configuration_template_name}}" },
-                "VersionLabel": { "Ref": "SampleVersion" },
-                {{ beanstalk_cnameprefix }}
+                {% if beanstalk_cnameprefix is defined %}
+                    {{ beanstalk_cnameprefix }},
+                {% endif %}
+                "VersionLabel": { "Ref": "SampleVersion" }
             }
         },
-        {{ beanstalk_dnsrecord }},
+        {% if beanstalk_dnsrecord is defined %}
+            {{ beanstalk_dnsrecord }},
+        {% endif %}
         "DatabaseSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Condition" : "CreateDatabaseResources",
@@ -656,7 +660,9 @@
                 ]
             }
         },
-        {{ beanstalk_endpoint }},
+        {% if beanstalk_endpoint is defined %}
+            {{ beanstalk_endpoint }},
+        {% endif %}
         "BeanstalkSecurityGroupId": {
             "Description": "Id of security group that includes all beanstalk instances",
             "Value": {
