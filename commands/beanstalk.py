@@ -35,7 +35,7 @@ class Beanstalk(Command):
     
     sample_app_keys = {
         "python" : "basicapp.zip",
-        "java" : "elasticbeanstalk-sampleapp.war"
+        "java" : "elasticbeanstalk-sampleapp.war",
         "nodejs" : "nodejs-sample.zip"
     }
 
