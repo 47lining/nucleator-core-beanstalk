@@ -100,7 +100,7 @@ class Beanstalk(Command):
         }
 
         bstype = kwargs.get("type", None)
-        if not bstype in ("python", "java"):
+        if not bstype in self.sample_app_keys:
             raise ValueError("unsupported beanstalk type")
         
         extra_vars["sample_keyname"] = self.sample_app_keys[bstype]

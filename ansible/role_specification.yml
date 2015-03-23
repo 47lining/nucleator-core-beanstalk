@@ -28,16 +28,32 @@ role_specification:
           Statement:
             - Effect: Allow
               Action:
-                - "dynamodb:*"
+                - "dynamodb:PutItem"
               Resource: '*'
             - Effect: Allow
               Action:
-                - "sqs:*"
+                - "sqs:GetQueueAttributes"
+                - "sqs:SendMessage"
+                - "sqs:ReceiveMessage"
+                - "sqs:DeleteMessage"
+              Resource: arn:aws:sqs:*
+            - Effect: Allow
+              Action:
+                - "cloudwatch:PutMetricAlarm"
+                - "cloudwatch:PutMetricData"
               Resource: '*'
             - Effect: Allow
               Action:
-                - "cloudwatch:*"
-              Resource: '*'
+                - "s3:ListBucket"
+                - "s3:GetObject"
+                - "s3:CreateBucket"
+                - "s3:PutObject"
+                - "s3:GetBucketPolicy"
+                - "s3:PutObjectAcl"
+                - "s3:GetObjectAcl"
+                - "s3:PutBucketPolicy"
+                - "s3:DeleteObject"
+              Resource: arn:aws:s3:::*
   - role_name: NucleatorBeanstalkProvisioner
     trust_policy:
       Version : "2008-10-17"
