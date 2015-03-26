@@ -62,6 +62,7 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--minscale", required=False, help="Minimum size of autoscaling group (default 1)")
         beanstalk_provision.add_argument("--maxscale", required=False, help="Maximum size of autoscaling group (default 4)")
         beanstalk_provision.add_argument("--service_role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
+        beanstalk_provision.add_argument("--queue_url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
 
         # configure subcommand
         beanstalk_configure=beanstalk_subparsers.add_parser('configure', help="configure provisioned nucleator beanstalk stackset")
@@ -161,6 +162,12 @@ class Beanstalk(Command):
                 extra_vars["beanstalk_tiertype_arg"] = tier
             else:
                 ValueError("tier must be 'worker' or 'webserver'")
+
+        queue_url = kwargs.get("queue_url", None)
+        if queue_url is not None:
+            if tier != 'worker':
+                ValueError("queue_url is only used when tier is 'worker'")
+            extra_vars["queue_url"] = queue_url
 
         if maxscale < minscale:
             raise ValueError("maxscale must be equal to or greater than minscale")

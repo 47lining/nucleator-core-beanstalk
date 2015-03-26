@@ -422,6 +422,14 @@
 			"OptionName": "DBSubnets",
 			"Value": { "Fn::If":  [ "CreateDatabaseResources", {"Ref" : "DatabaseSubnetGroupId"}, {"Ref" : "AWS::NoValue"}] }
                     }
+            {% if queue_url is defined %}
+            ,
+                {
+                    "Namespace": "aws:elasticbeanstalk:sqsd",
+                    "OptionName": "WorkerQueueURL",
+                    "Value": "{{ queue_url }}"
+                }
+            {% endif %}
 		]
 	    }
         },
