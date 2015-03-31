@@ -32,7 +32,7 @@
 # The nucleator command parsing checks for proper values; could be incorrect if playbook run directly
 - name: Set paramenters for webserver beanstalk type
   set_fact:
-    beanstalk_tier: "{{beanstalk_tier_type.frontend}}"
+    beanstalk_tier: "{{hostvars.localhost.beanstalk_tier_type.frontend}}"
     beanstalk_dnsrecord: "{{ beanstalk.dnsrecord | to_json_fragment }}"
     beanstalk_cnameprefix: "{{ beanstalk.cnameprefix | to_json_fragment }}"
     beanstalk_endpoint: "{{ beanstalk.endpoint | to_json_fragment }}"
@@ -40,7 +40,7 @@
 
 - name: Set paramenters for worker beanstalk type
   set_fact:
-    beanstalk_tier: "{{beanstalk_tier_type.backend}}"
+    beanstalk_tier: "{{hostvars.localhost.beanstalk_tier_type.backend}}"
     beanstalk_dnsrecord:
     beanstalk_cnameprefix:
     beanstalk_endpoint:
