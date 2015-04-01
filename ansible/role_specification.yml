@@ -323,3 +323,7 @@ role_specification:
                 - "rds:DescribeDBInstances"
                 - "rds:DeleteDBInstance"
               Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:DeleteQueue"
+              Resource: arn:aws:sqs:*
