@@ -92,3 +92,11 @@
 - name: show cloudformation output parameters
   action: debug msg="{{create_stackset_stack['stack_outputs']}}"
   when: beanstalk_deleting is not defined or not beanstalk_deleting|bool
+
+- name: Enable Logging on beanstalk s3 bucket
+  enable_logging:
+    log_bucket: "{{nucleator_logging_bucketname_specification}}"
+    region: "{{cage_names[cage_name]['region']}}"
+    account_number: "{{target_account_number}}"
+  environment: role_credentials
+  when: beanstalk_deleting is not defined or not beanstalk_deleting|bool 

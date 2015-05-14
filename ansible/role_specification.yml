@@ -87,6 +87,7 @@ role_specification:
                 - "s3:GetObjectAcl"
                 - "s3:PutBucketPolicy"
                 - "s3:DeleteObject"
+                - "s3:PutBucketLogging"
               Resource: arn:aws:s3:::*
             - Effect: Allow
               Action: 
