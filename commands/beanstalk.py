@@ -28,12 +28,15 @@ class Beanstalk(Command):
         "python" : ("64bit Amazon Linux 2014.03 v1.0.7 running Python 2.7", 
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
         "java" :   ("64bit Amazon Linux 2014.09 v1.1.0 running Tomcat 8 Java 8",
-                     "AWS Elastic Beanstalk Environment running Java Sample Application")
+                     "AWS Elastic Beanstalk Environment running Java Sample Application"),
+        "nodejs" : ("64bit Amazon Linux 2014.09 v1.2.1 running Node.js",
+                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
     }
     
     sample_app_keys = {
         "python" : "basicapp.zip",
-        "java" : "elasticbeanstalk-sampleapp.war"
+        "java" : "elasticbeanstalk-sampleapp.war",
+        "nodejs" : "nodejs-sample.zip"
     }
 
     def parser_init(self, subparsers):
@@ -96,7 +99,7 @@ class Beanstalk(Command):
         }
 
         bstype = kwargs.get("type", None)
-        if not bstype in ("python", "java"):
+        if not bstype in self.beanstalk_types.keys():
             raise ValueError("unsupported beanstalk type")
         
         extra_vars["sample_keyname"] = self.sample_app_keys[bstype]
