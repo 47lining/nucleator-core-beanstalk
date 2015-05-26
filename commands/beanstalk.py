@@ -28,7 +28,7 @@ class Beanstalk(Command):
                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
         "java7": ("64bit Amazon Linux 2015.09 v2.0.4 running Java 7"
                   "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6",
+        "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
         "python3": ("64bit Amazon Linux 2015.09 v2.0.6 running Python 3.4",
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
