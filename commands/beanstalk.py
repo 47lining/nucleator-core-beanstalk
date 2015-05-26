@@ -29,7 +29,7 @@ class Beanstalk(Command):
         "java" :   ("64bit Amazon Linux 2014.09 v1.1.0 running Tomcat 8 Java 8",
                      "AWS Elastic Beanstalk Environment running Java Sample Application"),
         "nodejs" : ("64bit Amazon Linux 2014.09 v1.2.1 running Node.js",
-                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
+                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
     }
     
     sample_app_keys = {
@@ -102,7 +102,7 @@ class Beanstalk(Command):
         }
 
         bstype = kwargs.get("type", None)
-        if not bstype in self.sample_app_keys:
+        if not bstype in self.beanstalk_types.keys():
             raise ValueError("unsupported beanstalk type")
         
         extra_vars["sample_keyname"] = self.sample_app_keys[bstype]
