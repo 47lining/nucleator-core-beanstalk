@@ -44,6 +44,7 @@ role_specification:
                 - "cloudformation:DescribeStackEvents"
                 - "cloudformation:DescribeStackResource"
                 - "cloudformation:GetTemplate"
+                - "cloudformation:ListStackResources"
               Resource: arn:aws:cloudformation:*
             - Effect: Allow
               Action: 
