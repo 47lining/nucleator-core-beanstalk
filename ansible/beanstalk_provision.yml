@@ -31,3 +31,5 @@
     customer_name: "{{customer_name}}"
     application_url: "https://elasticbeanstalk-samples-{{ cage_names[cage_name]['region'] }}.s3.amazonaws.com/{{sample_keyname}}"
     application_version: "0.0"
+    visibility_timeout: "{{visibility_timeout}}"
+    inactivity_timeout: "{{inactivity_timeout}}"

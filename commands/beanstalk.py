@@ -23,9 +23,8 @@ class Beanstalk(Command):
     
     name = "beanstalk"
     
-    
     beanstalk_types = {
-        "python" : ("64bit Amazon Linux 2014.03 v1.0.7 running Python 2.7", 
+        "python" : ("64bit Amazon Linux 2014.03 v1.1.0 running Python 2.7", 
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
         "java" :   ("64bit Amazon Linux 2014.09 v1.1.0 running Tomcat 8 Java 8",
                      "AWS Elastic Beanstalk Environment running Java Sample Application"),
@@ -63,6 +62,8 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--maxscale", required=False, help="Maximum size of autoscaling group (default 4)")
         beanstalk_provision.add_argument("--service_role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
         beanstalk_provision.add_argument("--queue_url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
+        beanstalk_provision.add_argument("--inactivity_timeout", required=False, help="Number of seconds for the inactivity timeout")
+        beanstalk_provision.add_argument("--visibility_timeout", required=False, help="Number of seconds for the visibility timeout")
 
         # configure subcommand
         beanstalk_configure=beanstalk_subparsers.add_parser('configure', help="configure provisioned nucleator beanstalk stackset")
@@ -133,6 +134,16 @@ class Beanstalk(Command):
                 extra_vars[name] = value
 
         extra_vars["beanstalk_deleting"]=kwargs.get("beanstalk_deleting", False)
+
+        extra_vars["inactivity_timeout"]=kwargs.get("inactivity_timeout")
+        if extra_vars["inactivity_timeout"] is None:
+            extra_vars["inactivity_timeout"] = 180
+        extra_vars["visibility_timeout"]=kwargs.get("visibility_timeout")
+        if extra_vars["visibility_timeout"] is None:
+            extra_vars["visibility_timeout"] = 30
+
+        print "inactivity_timeout = ", extra_vars["inactivity_timeout"]
+        print "visibility_timeout = ", extra_vars["visibility_timeout"]
         
         extra_vars["service_role"] = "NucleatorBeanstalkServiceRunner"
         if kwargs.get("service_role", None) is not None:

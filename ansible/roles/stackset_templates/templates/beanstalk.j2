@@ -72,9 +72,9 @@
             "ConstraintDescription": "must be a valid EC2 instance type."
         },
         "BeanstalkAutoscaleMinSize": {
-            "Description": "Maximum size for Beanstalk Autoscaling",
+            "Description": "Minimum size for Beanstalk Autoscaling",
             "Type": "Number",
-            "Default": "2"
+            "Default": "1"
         },
         "BeanstalkAutoscaleMaxSize": {
             "Description": "Maximum size for Beanstalk Autoscaling",
@@ -311,6 +311,16 @@
 		"Description": "{{configuration_template_description}}",
 		"SolutionStackName": "{{configuration_template_solution_stack_name}}",
 		"OptionSettings": [
+                     {
+            "Namespace": "aws:elasticbeanstalk:sqsd",
+            "OptionName": "InactivityTimeout",
+            "Value": "{{inactivity_timeout}}"
+                     },
+                     {
+            "Namespace": "aws:elasticbeanstalk:sqsd",
+            "OptionName": "VisibilityTimeout",
+            "Value": "{{visibility_timeout}}"
+                    },
                     {
 			"Namespace": "aws:elasticbeanstalk:application:environment",
 			"OptionName": "DB_USERNAME",
