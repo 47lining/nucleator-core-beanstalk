@@ -72,14 +72,29 @@
             "ConstraintDescription": "must be a valid EC2 instance type."
         },
         "BeanstalkAutoscaleMinSize": {
-            "Description": "Maximum size for Beanstalk Autoscaling",
+            "Description": "Minimum size for Beanstalk Autoscaling",
             "Type": "Number",
-            "Default": "2"
+            "Default": "1"
         },
         "BeanstalkAutoscaleMaxSize": {
             "Description": "Maximum size for Beanstalk Autoscaling",
             "Type": "Number",
             "Default": "4"
+        },
+        "BeanstalkTierType": {
+            "Description": "The tier type of this beanstalk: Standard or SQS/HTTP",
+            "Type": "String",
+            "Default": "Standard"
+        },
+        "BeanstalkTierName": {
+            "Description": "The tier name of this beanstalk: Worker or WebServer",
+            "Type": "String",
+            "Default": "WebServer"
+        },
+        "BeanstalkTierVersion": {
+            "Description": "The tier version of this beanstalk",
+            "Type": "String",
+            "Default": "1.0"
         },
         "DatabaseInstanceType": {
             "Description": "RDS EC2 instance type",
@@ -87,7 +102,7 @@
             "Default": "{{default_rds_instance_type}}",
             "AllowedValues": [
                 {{supported_rds_instance_types | to_json_fragment()}},
-		"None"
+                "None"
             ],
             "ConstraintDescription": "must be a valid RDS DB instance type, or \"None\"."
         },
@@ -152,14 +167,14 @@
 	}
     },
     "Resources": {
-    	"InstanceProfile" : {
-	    "Type" : "AWS::IAM::InstanceProfile",
-	    "Condition" : "CreateInstanceProfile",
-	    "Properties" : {
-		"Path" : "/",
-		"Roles" : { "Ref": "ServiceRole" }
-	    }
-	},
+        "InstanceProfile" : {
+            "Type" : "AWS::IAM::InstanceProfile",
+            "Condition" : "CreateInstanceProfile",
+            "Properties" : {
+                "Path" : "/",
+                "Roles" : { "Ref": "ServiceRole" }
+            }
+        },
         "BeanstalkSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
@@ -195,7 +210,7 @@
                 ]
             }
         },
-	{{ beanstalk.cage_extension_resources | to_json_fragment }},
+        {{ beanstalk.cage_extension_resources | to_json_fragment }},
         "BeanstalkNatSecurityGroupFtpIngress": {
             "Type": "AWS::EC2::SecurityGroupIngress",
             "Properties": {
@@ -249,11 +264,11 @@
                             {
                                 "Ref": "ApplicationName"
                             },
-			    "{{cage_name}}",
-			    "{{customer_name}}"
+                            "{{cage_name}}",
+                            "{{customer_name}}"
                         ]
                     ]
-		},
+		        },
                 "Description": {
                     "Fn::Join": [
                         "-",
@@ -296,6 +311,16 @@
 		"Description": "{{configuration_template_description}}",
 		"SolutionStackName": "{{configuration_template_solution_stack_name}}",
 		"OptionSettings": [
+                     {
+            "Namespace": "aws:elasticbeanstalk:sqsd",
+            "OptionName": "InactivityTimeout",
+            "Value": "{{inactivity_timeout}}"
+                     },
+                     {
+            "Namespace": "aws:elasticbeanstalk:sqsd",
+            "OptionName": "VisibilityTimeout",
+            "Value": "{{visibility_timeout}}"
+                    },
                     {
 			"Namespace": "aws:elasticbeanstalk:application:environment",
 			"OptionName": "DB_USERNAME",
@@ -407,6 +432,14 @@
 			"OptionName": "DBSubnets",
 			"Value": { "Fn::If":  [ "CreateDatabaseResources", {"Ref" : "DatabaseSubnetGroupId"}, {"Ref" : "AWS::NoValue"}] }
                     }
+            {% if queue_url is defined %}
+            ,
+                {
+                    "Namespace": "aws:elasticbeanstalk:sqsd",
+                    "OptionName": "WorkerQueueURL",
+                    "Value": "{{ queue_url }}"
+                }
+            {% endif %}
 		]
 	    }
         },
@@ -429,46 +462,21 @@
                         ]
                     ]
                 },
+                "Tier" : {
+                  "Type" : { "Ref": "BeanstalkTierType" },
+                  "Name" : { "Ref": "BeanstalkTierName" },
+                  "Version" : { "Ref": "BeanstalkTierVersion" }
+                },
                 "TemplateName": { "Ref": "{{configuration_template_name}}" },
-                "VersionLabel": { "Ref": "SampleVersion" },
-                "CNAMEPrefix": {
-                    "Fn::Join": [
-                        "-",
-                        [
-                            "elb",
-                            {
-                                "Ref": "ApplicationName"
-                            },
-                            {
-                                "Ref": "CageName"
-                            },
-                            "{{customer_domain | replace(".", "-")}}"
-                        ]
-                    ]
-                }
+                {% if beanstalk_cnameprefix is defined %}
+                    {{ beanstalk_cnameprefix }},
+                {% endif %}
+                "VersionLabel": { "Ref": "SampleVersion" }
             }
         },
-
-
-        "BeanstalkDnsRecord": {
-            "Type": "AWS::Route53::RecordSet",
-            "Properties": {
-                "HostedZoneName": "{{ cage_name }}.{{customer_domain}}.",
-                "Comment": "A record for beanstalk instance.",
-                "Name": "{{application_name}}.{{cage_name}}.{{customer_domain}}",
-                "Type": "CNAME",
-                "TTL": "300",
-                "ResourceRecords": [
-                    {
-                		"Fn::GetAtt": [
-                    		"BeanstalkEnv",
-                    		"EndpointURL"
-                		]
-            		}
-                ]
-            }
-        },
-
+        {% if beanstalk_dnsrecord is defined %}
+            {{ beanstalk_dnsrecord }},
+        {% endif %}
         "DatabaseSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Condition" : "CreateDatabaseResources",
@@ -526,7 +534,7 @@
                         "Key": "NucleatorGroup",
                         "Value": "NucleatorBeanstalk"
                     },
-        		    {{ nucleator_common_tags | to_json_fragment }}
+                    {{ nucleator_common_tags | to_json_fragment }}
                 ]
             }
         },
@@ -670,15 +678,9 @@
                 ]
             }
         },
-        "BeanstalkEndpoint": {
-            "Description": "Endpoint for the Beanstalk Environment",
-            "Value": {
-                "Fn::GetAtt": [
-                    "BeanstalkEnv",
-                    "EndpointURL"
-                ]
-            }
-        },
+        {% if beanstalk_endpoint is defined %}
+            {{ beanstalk_endpoint }},
+        {% endif %}
         "BeanstalkSecurityGroupId": {
             "Description": "Id of security group that includes all beanstalk instances",
             "Value": {

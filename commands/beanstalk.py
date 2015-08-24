@@ -23,7 +23,6 @@ class Beanstalk(Command):
     
     name = "beanstalk"
     
-    
     beanstalk_types = {
         "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7", 
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
@@ -53,6 +52,7 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--cage", required=True, help="Name of cage from nucleator config")
         beanstalk_provision.add_argument("--type", required=True, help="Type of beanstalk to provision (python or java)")
         beanstalk_provision.add_argument("--app_name", required=True, help="Name of beanstalk application to provision")
+        beanstalk_provision.add_argument("--tier", required=False, help="Tier of beanstalk to provision (webserver or worker)")
         beanstalk_provision.add_argument("--beanstalk_instance_type", required=False, help="EC2 instance type to provision")
         beanstalk_provision.add_argument("--database_instance_type", required=False, help="Database instance type to provision (default: None)")
         beanstalk_provision.add_argument("--database_name", required=False, help="Name of database to provision")
@@ -61,6 +61,9 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--minscale", required=False, help="Minimum size of autoscaling group (default 1)")
         beanstalk_provision.add_argument("--maxscale", required=False, help="Maximum size of autoscaling group (default 4)")
         beanstalk_provision.add_argument("--service_role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
+        beanstalk_provision.add_argument("--queue_url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
+        beanstalk_provision.add_argument("--inactivity_timeout", required=False, help="Number of seconds for the inactivity timeout")
+        beanstalk_provision.add_argument("--visibility_timeout", required=False, help="Number of seconds for the visibility timeout")
 
         # configure subcommand
         beanstalk_configure=beanstalk_subparsers.add_parser('configure', help="configure provisioned nucleator beanstalk stackset")
@@ -131,6 +134,16 @@ class Beanstalk(Command):
                 extra_vars[name] = value
 
         extra_vars["beanstalk_deleting"]=kwargs.get("beanstalk_deleting", False)
+
+        extra_vars["inactivity_timeout"]=kwargs.get("inactivity_timeout")
+        if extra_vars["inactivity_timeout"] is None:
+            extra_vars["inactivity_timeout"] = 180
+        extra_vars["visibility_timeout"]=kwargs.get("visibility_timeout")
+        if extra_vars["visibility_timeout"] is None:
+            extra_vars["visibility_timeout"] = 30
+
+        print "inactivity_timeout = ", extra_vars["inactivity_timeout"]
+        print "visibility_timeout = ", extra_vars["visibility_timeout"]
         
         extra_vars["service_role"] = "NucleatorBeanstalkServiceRunner"
         if kwargs.get("service_role", None) is not None:
@@ -153,6 +166,19 @@ class Beanstalk(Command):
                 maxscale = int(maxscale)
             except ValueError:
                 raise ValueError("maxscale must be an integer")
+
+        tier = kwargs.get("tier", None)
+        if tier is not None:
+            if tier == 'worker' or tier == 'webserver':
+                extra_vars["beanstalk_tiertype_arg"] = tier
+            else:
+                ValueError("tier must be 'worker' or 'webserver'")
+
+        queue_url = kwargs.get("queue_url", None)
+        if queue_url is not None:
+            if tier != 'worker':
+                ValueError("queue_url is only used when tier is 'worker'")
+            extra_vars["queue_url"] = queue_url
 
         if maxscale < minscale:
             raise ValueError("maxscale must be equal to or greater than minscale")

@@ -72,7 +72,14 @@ class ActionModule(object):
             bucket_name = args["bucket_name"]
             key_prefix = args["key_prefix"]
             timestamp = str(int(time.time()))
-            keyname = app_name + "-" + app_version + "-" + timestamp
+            if app_url.find('.war') > -1:
+                file_ext = ".war"
+            elif app_url.find('.zip') > -1:
+                file_ext = ".zip"
+            else:
+                file_ext = ""
+                print "Could not determine artifact format from url - not injecting nucleator config!"
+            keyname = app_name + "-" + app_version + "-" + timestamp + file_ext
 
             # See if this is the first deploy to happen after initial beanstalk setup (true
             # if there is only the initial application version). If so we are going to want
@@ -104,8 +111,6 @@ class ActionModule(object):
                 os.system("jar uf %s .ebextensions/%s" % (archive_file_name, config_file_name))
             elif app_url.find('.zip') > -1:
                 os.system("zip -u %s .ebextensions/%s" % (archive_file_name, config_file_name))
-            else:
-                print "Could not determine artifact format from url - not injecting nucleator config!"
 
             os.chdir(current_dir)
 

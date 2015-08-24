@@ -47,3 +47,37 @@ beanstalk:
         ToPort: "443"
         CidrIp: "0.0.0.0/0"
 #        DestinationSecurityGroupId: "{{nat_security_group_id_macro}}"
+
+  cnameprefix:
+    CNAMEPrefix:
+      'Fn::Join':
+          - "-"
+          -
+            - elb
+            -
+                "Ref": "ApplicationName"
+            -
+                "Ref": "CageName"
+            - "{{customer_domain | replace('.', '-')}}"
+
+  dnsrecord:
+    BeanstalkDnsRecord:
+      Type: "AWS::Route53::RecordSet"
+      Properties:
+        HostedZoneName: "{{ cage_name }}.{{customer_domain}}."
+        Comment: "A record for beanstalk instance."
+        Name: "{{application_name}}.{{cage_name}}.{{customer_domain}}"
+        Type: "CNAME"
+        TTL: "300"
+        ResourceRecords:
+          - "Fn::GetAtt":
+            - "BeanstalkEnv"
+            - "EndpointURL"
+
+  endpoint:
+    BeanstalkEndpoint:
+      Description: "Endpoint for the Beanstalk Environment"
+      Value:
+          "Fn::GetAtt":
+            - "BeanstalkEnv"
+            - "EndpointURL"
