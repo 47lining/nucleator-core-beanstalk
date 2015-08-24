@@ -15,14 +15,45 @@
 role_specification:
   - role_name: NucleatorBeanstalkServiceRunner
     trust_policy:
-      Version : "2008-10-17"
-      Statement :
-        - Effect : Allow
-          Sid : NucleatorBeanstalkServiceRunnerTrustPolicy
-          Principal :
-            Service : ec2.amazonaws.com
-          Action : sts:AssumeRole
+      Version: "2008-10-17"
+      Statement:
+        - Effect: Allow
+          Sid: NucleatorBeanstalkServiceRunnerTrustPolicy
+          Principal:
+            Service: ec2.amazonaws.com
+          Action: sts:AssumeRole
     access_policies:
+      - policy_name: NucleatorBeanstalkServiceAccessPolicy
+        policy_document:
+          Statement:
+            - Effect: Allow
+              Action:
+                - "dynamodb:PutItem"
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:GetQueueAttributes"
+                - "sqs:SendMessage"
+                - "sqs:ReceiveMessage"
+                - "sqs:DeleteMessage"
+              Resource: arn:aws:sqs:*
+            - Effect: Allow
+              Action:
+                - "cloudwatch:PutMetricAlarm"
+                - "cloudwatch:PutMetricData"
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - "s3:ListBucket"
+                - "s3:GetObject"
+                - "s3:CreateBucket"
+                - "s3:PutObject"
+                - "s3:GetBucketPolicy"
+                - "s3:PutObjectAcl"
+                - "s3:GetObjectAcl"
+                - "s3:PutBucketPolicy"
+                - "s3:DeleteObject"
+              Resource: arn:aws:s3:::*
   - role_name: NucleatorBeanstalkProvisioner
     trust_policy:
       Version : "2008-10-17"
@@ -37,7 +68,7 @@ role_specification:
         policy_document:
           Statement :
             - Effect: Allow
-              Action: 
+              Action:
                 - "cloudformation:CreateStack"
                 - "cloudformation:UpdateStack"
                 - "cloudformation:DescribeStacks"
@@ -47,7 +78,7 @@ role_specification:
                 - "cloudformation:ListStackResources"
               Resource: arn:aws:cloudformation:*
             - Effect: Allow
-              Action: 
+              Action:
                 - "s3:ListBucket"
                 - "s3:GetObject"
                 - "s3:CreateBucket"
@@ -57,9 +88,12 @@ role_specification:
                 - "s3:GetObjectAcl"
                 - "s3:PutBucketPolicy"
                 - "s3:DeleteObject"
+                - "s3:PutBucketLogging"
+                - "s3:GetBucketAcl"
+                - "s3:PutBucketAcl"
               Resource: arn:aws:s3:::*
             - Effect: Allow
-              Action: 
+              Action:
                 - "ec2:DescribeKeyPairs"
                 - "ec2:DescribeAddresses"
                 - "ec2:CreateSecurityGroup"
@@ -73,13 +107,13 @@ role_specification:
                 - "ec2:DescribeVpcs"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "iam:CreateInstanceProfile"
                 - "iam:AddRoleToInstanceProfile"
                 - "iam:PassRole"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "elasticbeanstalk:CreateApplication"
                 - "elasticbeanstalk:DescribeApplications"
                 - "elasticbeanstalk:CreateApplicationVersion"
@@ -89,7 +123,7 @@ role_specification:
                 - "elasticbeanstalk:DescribeEnvironments"
               Resource: arn:aws:elasticbeanstalk:*
             - Effect: Allow
-              Action: 
+              Action:
                 - "elasticloadbalancing:CreateLoadBalancer"
                 - "elasticloadbalancing:SetLoadBalancerPoliciesOfListener"
                 - "elasticloadbalancing:ConfigureHealthCheck"
@@ -97,7 +131,7 @@ role_specification:
                 - "elasticloadbalancing:DescribeLoadBalancers"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "autoscaling:CreateLaunchConfiguration"
                 - "autoscaling:CreateAutoScalingGroup"
                 - "autoscaling:UpdateAutoScalingGroup"
@@ -110,20 +144,27 @@ role_specification:
                 - "autoscaling:DeleteTags"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "cloudwatch:PutMetricAlarm"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "route53:ListHostedZones"
                 - "route53:ChangeResourceRecordSets"
                 - "route53:GetChange"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "rds:DescribeDBInstances"
                 - "rds:CreateDBInstance"
               Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:CreateQueue"
+                - "sqs:SendMessage"
+                - "sqs:ReadMessage"
+                - "sqs:GetQueueAttributes"
+              Resource: arn:aws:sqs:*
 
   - role_name: NucleatorBeanstalkInventoryManager
     trust_policy:
@@ -139,13 +180,13 @@ role_specification:
         policy_document:
           Statement :
             - Effect: Allow
-              Action: 
+              Action:
                 - "ec2:DescribeInstances"
                 - "ec2:DescribeVolumes"
-                - "ec2:DescribeSnapshots"  
+                - "ec2:DescribeSnapshots"
                 - "ec2:CreateTags"
                 - "ec2:DescribeTags"
-              Resource: '*'      
+              Resource: '*'
   - role_name: NucleatorBeanstalkDeployer
     trust_policy:
       Version : "2008-10-17"
@@ -160,7 +201,7 @@ role_specification:
         policy_document:
           Statement :
             - Effect: Allow
-              Action: 
+              Action:
                 - "ec2:DescribeInstances"
                 - "ec2:TerminateInstances"
                 - "ec2:DescribeSecurityGroups"
@@ -170,13 +211,14 @@ role_specification:
                 - "ec2:DescribeKeyPairs"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "cloudformation:GetTemplate"
                 - "cloudformation:UpdateStack"
                 - "cloudformation:DescribeStacks"
                 - "cloudformation:DescribeStackEvents"
                 - "cloudformation:DescribeStackResource"
                 - "cloudformation:DescribeStackResources"
+                - "cloudformation:ListStackResources"
               Resource: arn:aws:cloudformation:*
             - Effect: Allow
               Action:
@@ -187,9 +229,9 @@ role_specification:
                 - "s3:GetBucketPolicy"
                 - "s3:PutObjectAcl"
                 - "s3:DeleteObject"
-              Resource: arn:aws:s3:::* 
+              Resource: arn:aws:s3:::*
             - Effect: Allow
-              Action: 
+              Action:
                 - "elasticbeanstalk:DescribeApplicationVersions"
                 - "elasticbeanstalk:CreateApplicationVersion"
                 - "elasticbeanstalk:UpdateEnvironment"
@@ -207,7 +249,7 @@ role_specification:
                 - "autoscaling:DeleteTags"
               Resource: '*'
             - Effect: Allow
-              Action: 
+              Action:
                 - "elasticloadbalancing:DescribeLoadBalancers"
               Resource: '*'
   - role_name: NucleatorBeanstalkDeleter
@@ -224,7 +266,7 @@ role_specification:
         policy_document:
           Statement :
             - Effect : Allow
-              Action: 
+              Action:
                 - "cloudformation:DescribeStacks"
                 - "cloudformation:DeleteStack"
                 - "cloudformation:DescribeStackEvents"
@@ -286,3 +328,7 @@ role_specification:
                 - "rds:DescribeDBInstances"
                 - "rds:DeleteDBInstance"
               Resource: '*'
+            - Effect: Allow
+              Action:
+                - "sqs:DeleteQueue"
+              Resource: arn:aws:sqs:*
