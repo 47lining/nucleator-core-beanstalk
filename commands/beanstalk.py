@@ -24,11 +24,11 @@ class Beanstalk(Command):
     name = "beanstalk"
     
     beanstalk_types = {
-        "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7", 
+        "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7",
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
-        "java" :   ("64bit Amazon Linux 2014.09 v1.1.0 running Tomcat 8 Java 8",
+        "java" :   ("64bit Amazon Linux 2015.03 v2.0.0 running Tomcat 8 Java 8",
                      "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "nodejs" : ("64bit Amazon Linux 2014.09 v1.2.1 running Node.js",
+        "nodejs" : ("64bit Amazon Linux 2015.03 v2.0.0 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
     }
     
