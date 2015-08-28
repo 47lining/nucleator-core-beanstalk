@@ -129,6 +129,7 @@ role_specification:
                 - "elasticloadbalancing:ConfigureHealthCheck"
                 - "elasticloadbalancing:ModifyLoadBalancerAttributes"
                 - "elasticloadbalancing:DescribeLoadBalancers"
+                - "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
               Resource: '*'
             - Effect: Allow
               Action:
@@ -251,6 +252,7 @@ role_specification:
             - Effect: Allow
               Action:
                 - "elasticloadbalancing:DescribeLoadBalancers"
+                - "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
               Resource: '*'
   - role_name: NucleatorBeanstalkDeleter
     trust_policy:
