@@ -20,9 +20,9 @@ from nucleator.cli import ansible
 import os, subprocess, re, hashlib
 
 class Beanstalk(Command):
-    
+
     name = "beanstalk"
-    
+
     beanstalk_types = {
         "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7",
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
@@ -31,7 +31,7 @@ class Beanstalk(Command):
         "nodejs" : ("64bit Amazon Linux 2015.03 v2.0.0 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
     }
-    
+
     sample_app_keys = {
         "python" : "basicapp.zip",
         "java" : "elasticbeanstalk-sampleapp.war",
@@ -87,8 +87,8 @@ class Beanstalk(Command):
 
     def provision(self, **kwargs):
         """
-        This command provisions a new named Elastic Beanstalk instance in the indicated 
-        customer cage. 
+        This command provisions a new named Elastic Beanstalk instance in the indicated
+        customer cage.
         """
         cli = Command.get_cli(kwargs)
         cage = kwargs.get("cage", None)
@@ -104,13 +104,13 @@ class Beanstalk(Command):
         bstype = kwargs.get("type", None)
         if not bstype in self.beanstalk_types.keys():
             raise ValueError("unsupported beanstalk type")
-        
+
         extra_vars["sample_keyname"] = self.sample_app_keys[bstype]
-        
+
         kind, desc = self.beanstalk_types[bstype]
         extra_vars["configuration_template_solution_stack_name"] = kind
         extra_vars["configuration_template_description"] = desc
-        
+
         basename = kwargs.get("app_name", None)
         if not basename:
             raise ValueError("invalid beanstalk name")
@@ -125,9 +125,9 @@ class Beanstalk(Command):
         namespaced_envname="{0}-{1}-{2}".format(envname, cage, customer)
         namespaced_envname = self.safe_hashed_name(namespaced_envname, 23)
         extra_vars["environment_name"] = namespaced_envname
-        
+
         self.validate_names(namespaced_app_name, namespaced_envname)
-        
+
         for name in ("beanstalk_instance_type", "database_instance_type", "database_name", "database_user", "database_password"):
             value = kwargs.get(name, None)
             if value is not None:
@@ -144,7 +144,7 @@ class Beanstalk(Command):
 
         print "inactivity_timeout = ", extra_vars["inactivity_timeout"]
         print "visibility_timeout = ", extra_vars["visibility_timeout"]
-        
+
         extra_vars["service_role"] = "NucleatorBeanstalkServiceRunner"
         if kwargs.get("service_role", None) is not None:
             extra_vars["service_role"] = kwargs.get("service_role")
@@ -182,7 +182,7 @@ class Beanstalk(Command):
 
         if maxscale < minscale:
             raise ValueError("maxscale must be equal to or greater than minscale")
-        
+
         extra_vars["beanstalk_autoscale_min_size"] = str(minscale)
         extra_vars["beanstalk_autoscale_max_size"] = str(maxscale)
 
@@ -198,13 +198,13 @@ class Beanstalk(Command):
             playbook = "beanstalk_delete.yml"
 
         cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None))
-        
+
         return cli.safe_playbook(self.get_command_playbook(playbook),
                                  inventory_manager_rolename,
-                                 is_static=True, # dynamic inventory not required 
+                                 is_static=True, # dynamic inventory not required
                                  **extra_vars
         )
-    
+
     def safe_hashed_name(self, value, max):
         length = len(value)
         if length < max:
@@ -212,7 +212,7 @@ class Beanstalk(Command):
         trunc = value[:max - 6]
         hashed = hashlib.md5(value).hexdigest()
         return trunc + hashed[:6]
-    
+
     def validate_names(self, bsname, envname):
         alphanum = re.compile("^[a-zA-Z0-9-]*$")
         if len(bsname) > 99 or bsname.find('/') > -1:
@@ -223,10 +223,10 @@ class Beanstalk(Command):
             raise ValueError("Invalid namespaced beanstalk environment name {0} (must be < 23 characters and not contain a / character)".format(envname))
         if alphanum.match(envname) is None:
             raise ValueError("Invalid namespaced environment name {0} (must contain only alphanumeric characters and dashes)".format(envname))
-    
+
     def configure(self, **kwargs):
         """
-        This command configures a named Elastic Beanstalk instance that has been provisioned 
+        This command configures a named Elastic Beanstalk instance that has been provisioned
         in the indicated customer cage.
         """
         cli = Command.get_cli(kwargs)
@@ -246,14 +246,14 @@ class Beanstalk(Command):
             extra_vars["cli_stackset_name"] = "beanstalk"
             extra_vars["cli_stackset_instance_name"] = namespaced_app_name
             extra_vars["application_name"] = basename
-        
+
         command_list = []
         command_list.append("beanstalk")
 
         inventory_manager_rolename = "NucleatorBeanstalkInventoryManager"
 
         cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None)) # pushes credentials into environment
-        
+
         return cli.safe_playbook(
             self.get_command_playbook("beanstalk_configure.yml"),
             inventory_manager_rolename,
@@ -262,7 +262,7 @@ class Beanstalk(Command):
 
     def deploy(self, **kwargs):
         """
-        This command deploys a particular revision of an application to a provisioned 
+        This command deploys a particular revision of an application to a provisioned
         Elastic Beanstalk instance running in the indicated customer cage.
         """
         cli = Command.get_cli(kwargs)
@@ -279,7 +279,7 @@ class Beanstalk(Command):
         for name in ("app_name", "app_version"):
             if not kwargs.get(name, None):
                 raise ValueError("%s must be specified" % name)
-        
+
         basename=kwargs.get("app_name")
         namespaced_app_name="{0}-{1}-{2}".format(basename, cage, customer)
         namespaced_app_name = self.safe_hashed_name(namespaced_app_name, 100)
@@ -302,7 +302,7 @@ class Beanstalk(Command):
         inventory_manager_rolename = "NucleatorBeanstalkDeployer"
 
         cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None)) # pushes credentials into environment
-        
+
         return cli.safe_playbook(
             self.get_command_playbook("beanstalk_deploy.yml"),
             inventory_manager_rolename,
@@ -312,7 +312,7 @@ class Beanstalk(Command):
     def delete(self, **kwargs):
         """
         This command deletes the specified, previously provisioned Elastic Beanstalk instance from the indicated
-        customer cage. 
+        customer cage.
         """
         kwargs["beanstalk_deleting"]=True
         kwargs["type"]="java" # type must be specified to leverage provision, although its value is a don't care
