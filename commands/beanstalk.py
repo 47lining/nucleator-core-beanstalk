@@ -24,18 +24,50 @@ class Beanstalk(Command):
     name = "beanstalk"
 
     beanstalk_types = {
-        "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7",
+        "java8": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 8",
+                 "AWS Elastic Beanstalk Environment running Java Sample Application"),
+        "java7": ("64bit Amazon Linux 2015.09 v2.0.4 running Java 7"
+                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
+        "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6",
+                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
+        "python3": ("64bit Amazon Linux 2015.09 v2.0.6 running Python 3.4",
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
-        "java" :   ("64bit Amazon Linux 2015.03 v2.0.0 running Tomcat 8 Java 8",
-                     "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "nodejs" : ("64bit Amazon Linux 2015.03 v2.0.0 running Node.js",
-                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
+        "python27" : ("64bit Amazon Linux 2015.09 v2.0.6 running Python 2.7",
+                      "AWS Elastic Beanstalk Environment running Python Sample Application"),
+        "ruby22_pass": ("64bit Amazon Linux 2015.09 v2.0.6 running Ruby 2.2 (Passenger Standalone)",
+                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application"),
+        "ruby22_puma": ("64bit Amazon Linux 2015.09 v2.0.6 running Ruby 2.2 (Puma)",
+                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application"),
+        "tomcat8": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 8 Java 8",
+                    "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8"),
+        "tomcat7": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 7 Java 7",
+                    "AWS Elastic Beanstalk Environment running Tomcat 7 Java 7"),
+        "tomcat7java6": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 7 Java 6",
+                         "AWS Elastic Beanstalk Environment running Tomcat 7 Java 6"),
+        "go": ("64bit Amazon Linux 2015.09 v2.0.6 running Go 1.4",
+               "AWS Elastic Beanstalk Environment running Go 1.4"),
+        "docker17": ("64bit Amazon Linux 2015.09 v2.0.6 running Docker 1.7.1",
+                     "AWS Elastic Beanstalk Environment running Docker 1.7.1"),
+        "docker16": ("64bit Amazon Linux 2015.03 v1.4.6 running Docker 1.6.2",
+                     "AWS Elastic Beanstalk Environment running Docker 1.6.2")
     }
 
+    # These have not been validated
     sample_app_keys = {
-        "python" : "basicapp.zip",
-        "java" : "elasticbeanstalk-sampleapp.war",
-        "nodejs" : "nodejs-sample.zip"
+        "java7" : "elasticbeanstalk-sampleapp.war",
+        "java8" : "elasticbeanstalk-sampleapp.war",
+        "nodejs" : "nodejs-sample.zip",
+        "python3" : "basicapp.zip",
+        "python27" : "basicapp.zip",
+        "ruby22_pass": "ruby-sample.zip",
+        "ruby22_puma": "ruby-sample.zip",
+        "tomcat8" : "elasticbeanstalk-sampleapp.war",
+        "tomcat7" : "elasticbeanstalk-sampleapp.war",
+        "tomcat7java6" : "elasticbeanstalk-sampleapp.war",
+        "go" : "basicapp.zip",
+        "docker17" : "basicapp.zip",
+        "docker16" : "basicapp.zip",
+    #     wget https://s3.amazonaws.com/elasticbeanstalk-env-resources-us-east-1/stalks/eb_ruby_puma_4.0.1.9.0/lib/UserDataScript.sh
     }
 
     def parser_init(self, subparsers):
