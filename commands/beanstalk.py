@@ -26,7 +26,7 @@ class Beanstalk(Command):
     beanstalk_types = {
         "java8": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 8",
                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "java7": ("64bit Amazon Linux 2015.09 v2.0.4 running Java 7"
+        "java7": ("64bit Amazon Linux 2015.09 v2.0.4 running Java 7",
                   "AWS Elastic Beanstalk Environment running Java Sample Application"),
         "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
@@ -205,6 +205,8 @@ class Beanstalk(Command):
                 extra_vars["beanstalk_tiertype_arg"] = tier
             else:
                 ValueError("tier must be 'worker' or 'webserver'")
+        else:
+            extra_vars["beanstalk_tiertype_arg"] = "webserver"
 
         queue_url = kwargs.get("queue_url", None)
         if queue_url is not None:
