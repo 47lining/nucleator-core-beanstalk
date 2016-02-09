@@ -26,7 +26,7 @@ class Beanstalk(Command):
     beanstalk_types = {
         "java8": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 8",
                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "java7": ("64bit Amazon Linux 2015.09 v2.0.4 running Java 7",
+        "java7": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 7",
                   "AWS Elastic Beanstalk Environment running Java Sample Application"),
         "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
@@ -52,10 +52,9 @@ class Beanstalk(Command):
                      "AWS Elastic Beanstalk Environment running Docker 1.6.2")
     }
 
-    # These have not been validated
     sample_app_keys = {
-        "java7" : "elasticbeanstalk-sampleapp.war",
-        "java8" : "elasticbeanstalk-sampleapp.war",
+        "java7" : "java-sample-app.zip",
+        "java8" : "java-sample-app.zip",
         "nodejs" : "nodejs-sample.zip",
         "python3" : "basicapp.zip",
         "python27" : "basicapp.zip",
@@ -64,10 +63,9 @@ class Beanstalk(Command):
         "tomcat8" : "elasticbeanstalk-sampleapp.war",
         "tomcat7" : "elasticbeanstalk-sampleapp.war",
         "tomcat7java6" : "elasticbeanstalk-sampleapp.war",
-        "go" : "basicapp.zip",
-        "docker17" : "basicapp.zip",
-        "docker16" : "basicapp.zip",
-    #     wget https://s3.amazonaws.com/elasticbeanstalk-env-resources-us-east-1/stalks/eb_ruby_puma_4.0.1.9.0/lib/UserDataScript.sh
+        "go" : "golang-sample.zip",
+        "docker17" : "docker-sample.zip",
+        "docker16" : "docker-sample.zip"
     }
 
     def parser_init(self, subparsers):
@@ -349,7 +347,7 @@ class Beanstalk(Command):
         customer cage.
         """
         kwargs["beanstalk_deleting"]=True
-        kwargs["type"]="java" # type must be specified to leverage provision, although its value is a don't care
+        kwargs["type"]="java7" # type must be specified to leverage provision, although its value is a don't care
         return self.provision(**kwargs)
 
 # Create the singleton for auto-discovery
