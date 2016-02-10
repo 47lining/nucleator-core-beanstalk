@@ -122,6 +122,9 @@ role_specification:
                 - "elasticbeanstalk:DescribeApplicationVersions"
                 - "elasticbeanstalk:CreateEnvironment"
                 - "elasticbeanstalk:DescribeEnvironments"
+                - "elasticbeanstalk:UpdateEnvironment"
+                - "elasticbeanstalk:DescribeEnvironmentResources"
+                - "elasticbeanstalk:DescribeConfigurationSettings"
               Resource: arn:aws:elasticbeanstalk:*
             - Effect: Allow
               Action:
@@ -144,6 +147,7 @@ role_specification:
                 - "autoscaling:SuspendProcesses"
                 - "autoscaling:ResumeProcesses"
                 - "autoscaling:DeleteTags"
+                - "autoscaling:CreateOrUpdateTags"
               Resource: '*'
             - Effect: Allow
               Action:
@@ -250,6 +254,10 @@ role_specification:
                 - "autoscaling:DescribeLaunchConfigurations"
                 - "autoscaling:CreateOrUpdateTags"
                 - "autoscaling:DeleteTags"
+                - "autoscaling:DeletePolicy"
+                - "autoscaling:DeleteLaunchConfiguration"
+                - "autoscaling:UpdateAutoScalingGroup"
+                - "autoscaling:DeleteAutoScalingGroup"
               Resource: '*'
             - Effect: Allow
               Action:

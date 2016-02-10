@@ -223,7 +223,7 @@ class Beanstalk(Command):
         command_list.append("cage")
         command_list.append("beanstalk")
 
-        inventory_manager_rolename = "NucleatorBeanstalkDeployer"
+        inventory_manager_rolename = "NucleatorBeanstalkProvisioner"
 
         playbook = "beanstalk_provision.yml"
         if extra_vars["beanstalk_deleting"]:
