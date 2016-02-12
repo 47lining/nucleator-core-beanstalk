@@ -24,18 +24,48 @@ class Beanstalk(Command):
     name = "beanstalk"
 
     beanstalk_types = {
-        "python" : ("64bit Amazon Linux 2015.03 v2.0.1 running Python 2.7",
+        "java8": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 8",
+                 "AWS Elastic Beanstalk Environment running Java Sample Application"),
+        "java7": ("64bit Amazon Linux 2015.09 v2.0.6 running Java 7",
+                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
+        "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.6 running Node.js",
+                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
+        "python3": ("64bit Amazon Linux 2015.09 v2.0.6 running Python 3.4",
                     "AWS Elastic Beanstalk Environment running Python Sample Application"),
-        "java" :   ("64bit Amazon Linux 2015.03 v2.0.0 running Tomcat 8 Java 8",
-                     "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "nodejs" : ("64bit Amazon Linux 2015.03 v2.0.0 running Node.js",
-                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application")
+        "python27" : ("64bit Amazon Linux 2015.09 v2.0.6 running Python 2.7",
+                      "AWS Elastic Beanstalk Environment running Python Sample Application"),
+        "ruby22_pass": ("64bit Amazon Linux 2015.09 v2.0.6 running Ruby 2.2 (Passenger Standalone)",
+                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application"),
+        "ruby22_puma": ("64bit Amazon Linux 2015.09 v2.0.6 running Ruby 2.2 (Puma)",
+                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application"),
+        "tomcat8": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 8 Java 8",
+                    "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8"),
+        "tomcat7": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 7 Java 7",
+                    "AWS Elastic Beanstalk Environment running Tomcat 7 Java 7"),
+        "tomcat7java6": ("64bit Amazon Linux 2015.09 v2.0.6 running Tomcat 7 Java 6",
+                         "AWS Elastic Beanstalk Environment running Tomcat 7 Java 6"),
+        "go": ("64bit Amazon Linux 2015.09 v2.0.6 running Go 1.4",
+               "AWS Elastic Beanstalk Environment running Go 1.4"),
+        "docker17": ("64bit Amazon Linux 2015.09 v2.0.6 running Docker 1.7.1",
+                     "AWS Elastic Beanstalk Environment running Docker 1.7.1"),
+        "docker16": ("64bit Amazon Linux 2015.03 v1.4.6 running Docker 1.6.2",
+                     "AWS Elastic Beanstalk Environment running Docker 1.6.2")
     }
 
     sample_app_keys = {
-        "python" : "basicapp.zip",
-        "java" : "elasticbeanstalk-sampleapp.war",
-        "nodejs" : "nodejs-sample.zip"
+        "java7" : "java-sample-app.zip",
+        "java8" : "java-sample-app.zip",
+        "nodejs" : "nodejs-sample.zip",
+        "python3" : "basicapp.zip",
+        "python27" : "basicapp.zip",
+        "ruby22_pass": "ruby-sample.zip",
+        "ruby22_puma": "ruby-sample.zip",
+        "tomcat8" : "elasticbeanstalk-sampleapp.war",
+        "tomcat7" : "elasticbeanstalk-sampleapp.war",
+        "tomcat7java6" : "elasticbeanstalk-sampleapp.war",
+        "go" : "golang-sample.zip",
+        "docker17" : "docker-sample.zip",
+        "docker16" : "docker-sample.zip"
     }
 
     def parser_init(self, subparsers):
@@ -53,37 +83,37 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--type", required=True, help="Type of beanstalk to provision (python or java)")
         beanstalk_provision.add_argument("--app_name", required=True, help="Name of beanstalk application to provision")
         beanstalk_provision.add_argument("--tier", required=False, help="Tier of beanstalk to provision (webserver or worker)")
-        beanstalk_provision.add_argument("--beanstalk_instance_type", required=False, help="EC2 instance type to provision")
-        beanstalk_provision.add_argument("--database_instance_type", required=False, help="Database instance type to provision (default: None)")
-        beanstalk_provision.add_argument("--database_name", required=False, help="Name of database to provision")
-        beanstalk_provision.add_argument("--database_user", required=False, help="Database username")
-        beanstalk_provision.add_argument("--database_password", required=False, help="Database password")
+        beanstalk_provision.add_argument("--beanstalk-instance-type", required=False, help="EC2 instance type to provision")
+        beanstalk_provision.add_argument("--database-instance-type", required=False, help="Database instance type to provision (default: None)")
+        beanstalk_provision.add_argument("--database-name", required=False, help="Name of database to provision")
+        beanstalk_provision.add_argument("--database-user", required=False, help="Database username")
+        beanstalk_provision.add_argument("--database-password", required=False, help="Database password")
         beanstalk_provision.add_argument("--minscale", required=False, help="Minimum size of autoscaling group (default 1)")
         beanstalk_provision.add_argument("--maxscale", required=False, help="Maximum size of autoscaling group (default 4)")
-        beanstalk_provision.add_argument("--service_role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
-        beanstalk_provision.add_argument("--queue_url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
-        beanstalk_provision.add_argument("--inactivity_timeout", required=False, help="Number of seconds for the inactivity timeout")
-        beanstalk_provision.add_argument("--visibility_timeout", required=False, help="Number of seconds for the visibility timeout")
+        beanstalk_provision.add_argument("--service-role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
+        beanstalk_provision.add_argument("--queue-url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
+        beanstalk_provision.add_argument("--inactivity-timeout", required=False, help="Number of seconds for the inactivity timeout")
+        beanstalk_provision.add_argument("--visibility-timeout", required=False, help="Number of seconds for the visibility timeout")
 
         # configure subcommand
         beanstalk_configure=beanstalk_subparsers.add_parser('configure', help="configure provisioned nucleator beanstalk stackset")
         beanstalk_configure.add_argument("--customer", required=True, action=ValidateCustomerAction, help="Name of customer from nucleator config")
         beanstalk_configure.add_argument("--cage", required=True, help="Name of cage from nucleator config")
-        beanstalk_configure.add_argument("--app_name", required=False, help="Limit configuration to specified beanstalk name," +
+        beanstalk_configure.add_argument("--app-name", required=False, help="Limit configuration to specified beanstalk name," +
                                                                             " configures all beanstalks if not specified")
         # deploy subcommand
         beanstalk_deploy=beanstalk_subparsers.add_parser('deploy', help="deploy to provisioned nucleator beanstalk stackset")
         beanstalk_deploy.add_argument("--customer", required=True, action=ValidateCustomerAction, help="Name of customer from nucleator config")
         beanstalk_deploy.add_argument("--cage", required=True, help="Name of beanstalk to deploy to")
-        beanstalk_deploy.add_argument("--app_name", required=True, help="Name of the application to deploy")
-        beanstalk_deploy.add_argument("--app_version", required=True, help="The version of the application to deploy")
-        beanstalk_deploy.add_argument("--app_url", required=True, help="URL to the artifact to deploy")
+        beanstalk_deploy.add_argument("--app-name", required=True, help="Name of the application to deploy")
+        beanstalk_deploy.add_argument("--app-version", required=True, help="The version of the application to deploy")
+        beanstalk_deploy.add_argument("--app-url", required=True, help="URL to the artifact to deploy")
 
         # delete subcommand
         beanstalk_delete=beanstalk_subparsers.add_parser('delete', help="delete specified nucleator beanstalk stackset")
         beanstalk_delete.add_argument("--customer", required=True, action=ValidateCustomerAction, help="Name of customer from nucleator config")
         beanstalk_delete.add_argument("--cage", required=True, help="Name of cage from nucleator config")
-        beanstalk_delete.add_argument("--app_name", required=True, help="Name of beanstalk application")
+        beanstalk_delete.add_argument("--app-name", required=True, help="Name of beanstalk application")
 
     def provision(self, **kwargs):
         """
@@ -173,6 +203,8 @@ class Beanstalk(Command):
                 extra_vars["beanstalk_tiertype_arg"] = tier
             else:
                 ValueError("tier must be 'worker' or 'webserver'")
+        else:
+            extra_vars["beanstalk_tiertype_arg"] = "webserver"
 
         queue_url = kwargs.get("queue_url", None)
         if queue_url is not None:
@@ -191,7 +223,7 @@ class Beanstalk(Command):
         command_list.append("cage")
         command_list.append("beanstalk")
 
-        inventory_manager_rolename = "NucleatorBeanstalkDeployer"
+        inventory_manager_rolename = "NucleatorBeanstalkProvisioner"
 
         playbook = "beanstalk_provision.yml"
         if extra_vars["beanstalk_deleting"]:
@@ -315,7 +347,7 @@ class Beanstalk(Command):
         customer cage.
         """
         kwargs["beanstalk_deleting"]=True
-        kwargs["type"]="java" # type must be specified to leverage provision, although its value is a don't care
+        kwargs["type"]="java7" # type must be specified to leverage provision, although its value is a don't care
         return self.provision(**kwargs)
 
 # Create the singleton for auto-discovery

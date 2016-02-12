@@ -98,6 +98,7 @@ role_specification:
                 - "ec2:DescribeAddresses"
                 - "ec2:CreateSecurityGroup"
                 - "ec2:DescribeSecurityGroups"
+                - "ec2:DescribeAccountAttributes"
                 - "ec2:CreateTags"
                 - "ec2:RevokeSecurityGroupEgress"
                 - "ec2:AuthorizeSecurityGroupEgress"
@@ -121,6 +122,9 @@ role_specification:
                 - "elasticbeanstalk:DescribeApplicationVersions"
                 - "elasticbeanstalk:CreateEnvironment"
                 - "elasticbeanstalk:DescribeEnvironments"
+                - "elasticbeanstalk:UpdateEnvironment"
+                - "elasticbeanstalk:DescribeEnvironmentResources"
+                - "elasticbeanstalk:DescribeConfigurationSettings"
               Resource: arn:aws:elasticbeanstalk:*
             - Effect: Allow
               Action:
@@ -143,6 +147,7 @@ role_specification:
                 - "autoscaling:SuspendProcesses"
                 - "autoscaling:ResumeProcesses"
                 - "autoscaling:DeleteTags"
+                - "autoscaling:CreateOrUpdateTags"
               Resource: '*'
             - Effect: Allow
               Action:
@@ -224,6 +229,7 @@ role_specification:
             - Effect: Allow
               Action:
                 - "s3:ListBucket"
+                - "s3:CreateBucket"
                 - "s3:PutObject"
                 - "s3:GetObject"
                 - "s3:GetObjectAcl"
@@ -248,6 +254,10 @@ role_specification:
                 - "autoscaling:DescribeLaunchConfigurations"
                 - "autoscaling:CreateOrUpdateTags"
                 - "autoscaling:DeleteTags"
+                - "autoscaling:DeletePolicy"
+                - "autoscaling:DeleteLaunchConfiguration"
+                - "autoscaling:UpdateAutoScalingGroup"
+                - "autoscaling:DeleteAutoScalingGroup"
               Resource: '*'
             - Effect: Allow
               Action:
