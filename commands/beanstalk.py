@@ -81,7 +81,7 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--customer", required=True, action=ValidateCustomerAction, help="Name of customer from nucleator config")
         beanstalk_provision.add_argument("--cage", required=True, help="Name of cage from nucleator config")
         beanstalk_provision.add_argument("--type", required=True, help="Type of beanstalk to provision (python or java)")
-        beanstalk_provision.add_argument("--app_name", required=True, help="Name of beanstalk application to provision")
+        beanstalk_provision.add_argument("--app-name", required=True, help="Name of beanstalk application to provision")
         beanstalk_provision.add_argument("--tier", required=False, help="Tier of beanstalk to provision (webserver or worker)")
         beanstalk_provision.add_argument("--beanstalk-instance-type", required=False, help="EC2 instance type to provision")
         beanstalk_provision.add_argument("--database-instance-type", required=False, help="Database instance type to provision (default: None)")
