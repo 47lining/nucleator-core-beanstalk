@@ -106,6 +106,7 @@ role_specification:
                 - "ec2:DescribeSubnets"
                 - "ec2:DescribeImages"
                 - "ec2:DescribeVpcs"
+                - "ec2:TerminateInstances"
               Resource: '*'
             - Effect: Allow
               Action:
