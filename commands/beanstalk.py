@@ -129,6 +129,7 @@ class Beanstalk(Command):
             "cage_name": cage,
             "customer_name": customer,
             "verbosity": kwargs.get("verbosity", None),
+            "debug_credentials": kwargs.get("debug_credentials", None),
         }
 
         bstype = kwargs.get("type", None)
@@ -229,7 +230,7 @@ class Beanstalk(Command):
         if extra_vars["beanstalk_deleting"]:
             playbook = "beanstalk_delete.yml"
 
-        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None))
+        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None), debug_credentials=kwargs.get("debug_credentials", None))
 
         return cli.safe_playbook(self.get_command_playbook(playbook),
                                  inventory_manager_rolename,
@@ -270,6 +271,7 @@ class Beanstalk(Command):
             "cage_name": cage,
             "customer_name": customer,
             "verbosity": kwargs.get("verbosity", None),
+            "debug_credentials": kwargs.get("debug_credentials", None),
         }
         basename = kwargs.get("app_name", None)
         if basename:
@@ -284,7 +286,7 @@ class Beanstalk(Command):
 
         inventory_manager_rolename = "NucleatorBeanstalkInventoryManager"
 
-        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None)) # pushes credentials into environment
+        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None), debug_credentials=kwargs.get("debug_credentials", None)) # pushes credentials into environment
 
         return cli.safe_playbook(
             self.get_command_playbook("beanstalk_configure.yml"),
@@ -306,6 +308,7 @@ class Beanstalk(Command):
             "cage_name": cage,
             "customer_name": customer,
             "verbosity": kwargs.get("verbosity", None),
+            "debug_credentials": kwargs.get("debug_credentials", None),
         }
 
         for name in ("app_name", "app_version"):
@@ -333,7 +336,7 @@ class Beanstalk(Command):
 
         inventory_manager_rolename = "NucleatorBeanstalkDeployer"
 
-        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None)) # pushes credentials into environment
+        cli.obtain_credentials(commands = command_list, cage=cage, customer=customer, verbosity=kwargs.get("verbosity", None), debug_credentials=kwargs.get("debug_credentials", None)) # pushes credentials into environment
 
         return cli.safe_playbook(
             self.get_command_playbook("beanstalk_deploy.yml"),
