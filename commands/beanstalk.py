@@ -62,6 +62,8 @@ class Beanstalk(Command):
         "nodejs" : "nodejs-sample.zip",
         "python3" : "basicapp.zip",
         "python27" : "basicapp.zip",
+        "ruby23_pass": "ruby-sample.zip",
+        "ruby23_puma": "ruby-sample.zip",
         "ruby22_pass": "ruby-sample.zip",
         "ruby22_puma": "ruby-sample.zip",
         "tomcat8" : "elasticbeanstalk-sampleapp.war",
