@@ -23,55 +23,53 @@ class Beanstalk(Command):
 
     name = "beanstalk"
 
+    # For a list of supported types see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html
     beanstalk_types = {
-        "java8": ("64bit Amazon Linux 2015.09 v2.0.7 running Java 8",
-                 "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "java7": ("64bit Amazon Linux 2015.09 v2.0.7 running Java 7",
-                  "AWS Elastic Beanstalk Environment running Java Sample Application"),
-        "nodejs":  ("64bit Amazon Linux 2015.09 v2.0.7 running Node.js",
-                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application"),
-        "python3": ("64bit Amazon Linux 2015.09 v2.0.7 running Python 3.4",
-                    "AWS Elastic Beanstalk Environment running Python Sample Application"),
-        "python27" : ("64bit Amazon Linux 2015.09 v2.0.7 running Python 2.7",
-                      "AWS Elastic Beanstalk Environment running Python Sample Application"),
+        "java8": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 8",
+                 "AWS Elastic Beanstalk Environment running Java Sample Application",
+                 "java-sample-app.zip"),
+        "java7": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 7",
+                  "AWS Elastic Beanstalk Environment running Java Sample Application",
+                  "java-sample-app.zip"),
+        "nodejs":  ("64bit Amazon Linux 2016.03 v2.1.0 running Node.js",
+                    "AWS Elastic Beanstalk Environment running NodeJs Sample Application",
+                    "nodejs-sample.zip"),
+        "python3": ("64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4",
+                    "AWS Elastic Beanstalk Environment running Python Sample Application",
+                    "basicapp.zip"),
+        "python27" : ("64bit Amazon Linux 2016.03 v2.1.0 running Python 2.7",
+                      "AWS Elastic Beanstalk Environment running Python Sample Application",
+                      "basicapp.zip"),
         "ruby23_pass": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Passenger Standalone)",
-                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application"),
+                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
+                        "ruby-sample.zip"),
         "ruby23_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Puma)",
-                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application"),
-        "ruby22_pass": ("64bit Amazon Linux 2015.09 v2.0.7 running Ruby 2.2 (Passenger Standalone)",
-                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application"),
-        "ruby22_puma": ("64bit Amazon Linux 2015.09 v2.0.7 running Ruby 2.2 (Puma)",
-                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application"),
-        "tomcat8": ("64bit Amazon Linux 2015.09 v2.0.7 running Tomcat 8 Java 8",
-                    "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8"),
-        "tomcat7": ("64bit Amazon Linux 2015.09 v2.0.7 running Tomcat 7 Java 7",
-                    "AWS Elastic Beanstalk Environment running Tomcat 7 Java 7"),
-        "tomcat7java6": ("64bit Amazon Linux 2015.09 v2.0.7 running Tomcat 7 Java 6",
-                         "AWS Elastic Beanstalk Environment running Tomcat 7 Java 6"),
+                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
+                        "ruby-sample.zip"),
+        "ruby22_pass": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.2 (Passenger Standalone)",
+                        "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
+                        "ruby-sample.zip"),
+        "ruby22_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.2 (Puma)",
+                        "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
+                        "ruby-sample.zip"),
+        "tomcat8": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 8 Java 8",
+                    "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8",
+                    "elasticbeanstalk-sampleapp.war"),
+        "tomcat7": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 7 Java 7",
+                    "AWS Elastic Beanstalk Environment running Tomcat 7 Java 7",
+                    "elasticbeanstalk-sampleapp.war"),
+        "tomcat7java6": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 7 Java 6",
+                         "AWS Elastic Beanstalk Environment running Tomcat 7 Java 6",
+                         "elasticbeanstalk-sampleapp.war"),
         "go": ("64bit Amazon Linux 2015.09 v2.0.7 running Go 1.4",
-               "AWS Elastic Beanstalk Environment running Go 1.4"),
-        "docker17": ("64bit Amazon Linux 2015.09 v2.0.7 running Docker 1.7.1",
-                     "AWS Elastic Beanstalk Environment running Docker 1.7.1"),
-        "docker16": ("64bit Amazon Linux 2015.03 v1.4.6 running Docker 1.6.2",
-                     "AWS Elastic Beanstalk Environment running Docker 1.6.2")
-    }
-
-    sample_app_keys = {
-        "java7" : "java-sample-app.zip",
-        "java8" : "java-sample-app.zip",
-        "nodejs" : "nodejs-sample.zip",
-        "python3" : "basicapp.zip",
-        "python27" : "basicapp.zip",
-        "ruby23_pass": "ruby-sample.zip",
-        "ruby23_puma": "ruby-sample.zip",
-        "ruby22_pass": "ruby-sample.zip",
-        "ruby22_puma": "ruby-sample.zip",
-        "tomcat8" : "elasticbeanstalk-sampleapp.war",
-        "tomcat7" : "elasticbeanstalk-sampleapp.war",
-        "tomcat7java6" : "elasticbeanstalk-sampleapp.war",
-        "go" : "golang-sample.zip",
-        "docker17" : "docker-sample.zip",
-        "docker16" : "docker-sample.zip"
+               "AWS Elastic Beanstalk Environment running Go 1.4",
+               "golang-sample.zip"),
+        "docker19": ("64bit Amazon Linux 2016.03 v2.1.0 running Docker 1.9.1",
+                     "AWS Elastic Beanstalk Environment running Docker 1.9.1",
+                     "docker-sample.zip"),
+        "multidocker19": ("64bit Amazon Linux 2016.03 v2.1.0 running Multi-container Docker 1.9.1 (Generic)",
+                     "AWS Elastic Beanstalk Environment running Multi-container Docker 1.9.1",
+                     "docker-sample.zip")
     }
 
     def parser_init(self, subparsers):
@@ -142,11 +140,11 @@ class Beanstalk(Command):
         if not bstype in self.beanstalk_types.keys():
             raise ValueError("unsupported beanstalk type")
 
-        extra_vars["sample_keyname"] = self.sample_app_keys[bstype]
 
-        kind, desc = self.beanstalk_types[bstype]
+        kind, desc, sample_app = self.beanstalk_types[bstype]
         extra_vars["configuration_template_solution_stack_name"] = kind
         extra_vars["configuration_template_description"] = desc
+        extra_vars["sample_keyname"] = sample_app
 
         basename = kwargs.get("app_name", None)
         if not basename:
