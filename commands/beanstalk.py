@@ -34,7 +34,7 @@ class Beanstalk(Command):
         "nodejs":  ("64bit Amazon Linux 2016.03 v2.1.0 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application",
                     "nodejs-sample.zip"),
-        "python3": ("64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4",
+        "python3": ("64bit Amazon Linux 2016.03 v2.1.3 running Python 3.4",
                     "AWS Elastic Beanstalk Environment running Python Sample Application",
                     "basicapp.zip"),
         "python27" : ("64bit Amazon Linux 2016.03 v2.1.0 running Python 2.7",
