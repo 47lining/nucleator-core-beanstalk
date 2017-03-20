@@ -46,7 +46,7 @@ class Beanstalk(Command):
                     # "python-v1.zip"
         "ruby23_pass": ("64bit Amazon Linux 2016.09 v2.3.2 running Ruby 2.3 (Passenger Standalone)",
                         "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
-                        "ruby-passenger-v1.zip"),
+                        "ruby-passenger-v2.zip"),
         "ruby23_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Puma)",
                         "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
                         "ruby-puma-v1.zip"),
