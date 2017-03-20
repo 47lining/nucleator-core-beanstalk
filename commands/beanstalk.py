@@ -28,24 +28,29 @@ class Beanstalk(Command):
         "java8": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 8",
                  "AWS Elastic Beanstalk Environment running Java Sample Application",
                  "java-sample-app.zip"),
+                # java-se-jetty-maven-v1.zip
         "java7": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 7",
                   "AWS Elastic Beanstalk Environment running Java Sample Application",
                   "java-sample-app.zip"),
+                # java-se-jetty-maven-v1.zip
         "nodejs":  ("64bit Amazon Linux 2016.03 v2.1.0 running Node.js",
                     "AWS Elastic Beanstalk Environment running NodeJs Sample Application",
                     "nodejs-sample.zip"),
+                    # "nodejs-v1.zip"),
         "python3": ("64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4",
                     "AWS Elastic Beanstalk Environment running Python Sample Application",
                     "basicapp.zip"),
+                    # "python-v1.zip"
         "python27" : ("64bit Amazon Linux 2016.03 v2.1.0 running Python 2.7",
                       "AWS Elastic Beanstalk Environment running Python Sample Application",
                       "basicapp.zip"),
-        "ruby23_pass": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Passenger Standalone)",
+                    # "python-v1.zip"
+        "ruby23_pass": ("64bit Amazon Linux 2016.09 v2.3.2 running Ruby 2.3 (Passenger Standalone)",
                         "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
-                        "ruby-sample.zip"),
+                        "ruby-passenger-v1.zip"),
         "ruby23_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Puma)",
                         "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
-                        "ruby-sample.zip"),
+                        "ruby-puma-v1.zip"),
         "ruby22_pass": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.2 (Passenger Standalone)",
                         "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
                         "ruby-sample.zip"),
@@ -55,21 +60,27 @@ class Beanstalk(Command):
         "tomcat8": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 8 Java 8",
                     "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8",
                     "elasticbeanstalk-sampleapp.war"),
+                    # "java-tomcat-v1.zip"
         "tomcat7": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 7 Java 7",
                     "AWS Elastic Beanstalk Environment running Tomcat 7 Java 7",
                     "elasticbeanstalk-sampleapp.war"),
+                    # "java-tomcat-v1.zip"
         "tomcat7java6": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 7 Java 6",
                          "AWS Elastic Beanstalk Environment running Tomcat 7 Java 6",
                          "elasticbeanstalk-sampleapp.war"),
+                    # "java-tomcat-v1.zip"
         "go": ("64bit Amazon Linux 2015.09 v2.0.7 running Go 1.4",
                "AWS Elastic Beanstalk Environment running Go 1.4",
                "golang-sample.zip"),
+                # "go-v1.zip"
         "docker19": ("64bit Amazon Linux 2016.03 v2.1.0 running Docker 1.9.1",
                      "AWS Elastic Beanstalk Environment running Docker 1.9.1",
                      "docker-sample.zip"),
+                     # "docker-singlecontainer-v1.zip"),
         "multidocker19": ("64bit Amazon Linux 2016.03 v2.1.0 running Multi-container Docker 1.9.1 (Generic)",
                      "AWS Elastic Beanstalk Environment running Multi-container Docker 1.9.1",
                      "docker-sample.zip")
+                     # "docker-multicontainer-v2.zip"),
     }
 
     def parser_init(self, subparsers):
