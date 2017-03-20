@@ -126,6 +126,7 @@ role_specification:
                 - "elasticbeanstalk:UpdateEnvironment"
                 - "elasticbeanstalk:DescribeEnvironmentResources"
                 - "elasticbeanstalk:DescribeConfigurationSettings"
+                - "elasticbeanstalk:DescribeConfigurationOptions"
               Resource: arn:aws:elasticbeanstalk:*
             - Effect: Allow
               Action:
