@@ -24,6 +24,8 @@ class Beanstalk(Command):
     name = "beanstalk"
 
     # For a list of supported types see http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.platforms.html
+    # The URL to the sample app is best found by creating a new environment and then looking in the
+    # CF template (ruby23_pass updated 3/21/17)
     beanstalk_types = {
         "java8": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 8",
                  "AWS Elastic Beanstalk Environment running Java Sample Application",
@@ -46,7 +48,7 @@ class Beanstalk(Command):
                     # "python-v1.zip"
         "ruby23_pass": ("64bit Amazon Linux 2016.09 v2.3.2 running Ruby 2.3 (Passenger Standalone)",
                         "AWS Elastic Beanstalk Environment running Ruby Passenger Sample Application",
-                        "ruby-passenger-v2.zip"),
+                        "ruby/passenger-sample-20160218.zip"),
         "ruby23_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.3 (Puma)",
                         "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
                         "ruby-puma-v1.zip"),
