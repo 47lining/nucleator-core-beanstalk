@@ -425,7 +425,7 @@
 				    { "Ref": "PublicSubnet2Id" }
 				]
 			    ]
-			} 
+			}
 		    },
                     {
 			"Namespace": "aws:ec2:vpc",
@@ -471,7 +471,14 @@
                 {% if beanstalk_cnameprefix is defined %}
                     {{ beanstalk_cnameprefix }},
                 {% endif %}
-                "VersionLabel": { "Ref": "SampleVersion" }
+                "VersionLabel": { "Ref": "SampleVersion" },
+                "Tags": [
+                    {
+                        "Key": "NucleatorGroup",
+                        "Value": "NucleatorBeanstalk"
+                    },
+                    {{ nucleator_common_tags | to_json_fragment }}
+                ]
             }
         },
         {% if beanstalk_dnsrecord is defined %}
