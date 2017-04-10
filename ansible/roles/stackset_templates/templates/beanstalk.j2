@@ -15,7 +15,7 @@
             "Type": "String",
             "MinLength": "1",
             "MaxLength": "255",
-            "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+            "AllowedPattern": "[a-zA-Z][a-zA-Z0-9-]*",
             "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
         },
         "EnvironmentName": {
@@ -425,7 +425,7 @@
 				    { "Ref": "PublicSubnet2Id" }
 				]
 			    ]
-			} 
+			}
 		    },
                     {
 			"Namespace": "aws:ec2:vpc",
@@ -471,7 +471,14 @@
                 {% if beanstalk_cnameprefix is defined %}
                     {{ beanstalk_cnameprefix }},
                 {% endif %}
-                "VersionLabel": { "Ref": "SampleVersion" }
+                "VersionLabel": { "Ref": "SampleVersion" },
+                "Tags": [
+                    {
+                        "Key": "NucleatorGroup",
+                        "Value": "NucleatorBeanstalk"
+                    },
+                    {{ nucleator_common_tags | to_json_fragment }}
+                ]
             }
         },
         {% if beanstalk_dnsrecord is defined %}
