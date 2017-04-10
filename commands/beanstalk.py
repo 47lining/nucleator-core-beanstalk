@@ -27,11 +27,11 @@ class Beanstalk(Command):
     # The URL to the sample app is best found by creating a new environment and then looking in the
     # CF template (ruby23_pass updated 3/21/17)
     beanstalk_types = {
-        "java8": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 8",
+        "java8": ("64bit Amazon Linux 2016.09 v2.4.4 running Java 8",
                  "AWS Elastic Beanstalk Environment running Java Sample Application",
                  "java-sample-app.zip"),
                 # java-se-jetty-maven-v1.zip
-        "java7": ("64bit Amazon Linux 2016.03 v2.1.0 running Java 7",
+        "java7": ("64bit Amazon Linux 2016.09 v2.4.4 running Java 7",
                   "AWS Elastic Beanstalk Environment running Java Sample Application",
                   "java-sample-app.zip"),
                 # java-se-jetty-maven-v1.zip
