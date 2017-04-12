@@ -328,11 +328,6 @@
                     },
                     {
 			"Namespace": "aws:elasticbeanstalk:application:environment",
-			"OptionName": "ServiceRole",
-			"Value": { "Ref":  "BeanstalkServiceRole" }
-                    },
-                    {
-			"Namespace": "aws:elasticbeanstalk:application:environment",
 			"OptionName": "DB_USERNAME",
 			"Value": { "Fn::If":  [ "CreateDatabaseResources", {"Ref" : "DatabaseUser"}, {"Ref" : "AWS::NoValue"}] }
                     },
@@ -460,6 +455,13 @@
                     "Ref": "BeanstalkApp"
                 },
                 "EnvironmentName": { "Ref": "EnvironmentName" },
+		"OptionSettings": [
+                    {
+			"Namespace": "aws:elasticbeanstalk:application:environment",
+			"OptionName": "ServiceRole",
+			"Value": { "Ref":  "BeanstalkServiceRole" }
+                    }
+		],
                 "Description": {
                     "Fn::Join": [
                         "",
