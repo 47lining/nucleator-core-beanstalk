@@ -80,7 +80,8 @@
       DatabaseName: "{{database_name}}"
       DatabaseUser: "{{database_user}}"
       DatabasePassword: "{{database_password}}"
-      ServiceRole: "{{service_role}}"
+      InstanceServiceRole: "{{instance_service_role}}"
+      BeanstalkServiceRole: "{{beanstalk_service_role}}"
 
     # TODO how will this work with tmp creds?  Does it need to? (I think it does)
   environment: role_credentials

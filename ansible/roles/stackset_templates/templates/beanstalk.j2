@@ -146,9 +146,14 @@
             "AllowedPattern": "[a-zA-Z0-9]*",
             "ConstraintDescription": "must contain only 8 to 41 alphanumeric characters."
         },
-        "ServiceRole": {
+        "InstanceServiceRole": {
             "Type": "CommaDelimitedList",
             "Description": "String including comma-separated list of Role name(s) to use to establish an Instance Profile to associate with the instance"
+        },
+        "BeanstalkServiceRole": {
+            "Type": "String",
+	    "Default": "aws-elasticbeanstalk-service-role",
+            "Description": "IAM Role that Elastic Beanstalk Service assumes to maintain the beanstalk"
         }
     },
     "Conditions" : {
@@ -158,7 +163,7 @@
 		{
 		    "Fn::Equals" : [
 			{
-			    "Fn::Join" : [ ",", { "Ref" : "ServiceRole" } ]
+			    "Fn::Join" : [ ",", { "Ref" : "InstanceServiceRole" } ]
 			},
 			"None"
 		    ]
@@ -172,7 +177,7 @@
             "Condition" : "CreateInstanceProfile",
             "Properties" : {
                 "Path" : "/",
-                "Roles" : { "Ref": "ServiceRole" }
+                "Roles" : { "Ref": "InstanceServiceRole" }
             }
         },
         "BeanstalkSecurityGroup": {
@@ -312,14 +317,19 @@
 		"SolutionStackName": "{{configuration_template_solution_stack_name}}",
 		"OptionSettings": [
                      {
-            "Namespace": "aws:elasticbeanstalk:sqsd",
-            "OptionName": "InactivityTimeout",
-            "Value": "{{inactivity_timeout}}"
+			 "Namespace": "aws:elasticbeanstalk:sqsd",
+			 "OptionName": "InactivityTimeout",
+			 "Value": "{{inactivity_timeout}}"
                      },
                      {
-            "Namespace": "aws:elasticbeanstalk:sqsd",
-            "OptionName": "VisibilityTimeout",
-            "Value": "{{visibility_timeout}}"
+			 "Namespace": "aws:elasticbeanstalk:sqsd",
+			 "OptionName": "VisibilityTimeout",
+			 "Value": "{{visibility_timeout}}"
+                    },
+                    {
+			"Namespace": "aws:elasticbeanstalk:application:environment",
+			"OptionName": "ServiceRole",
+			"Value": { "Ref":  "BeanstalkServiceRole" }
                     },
                     {
 			"Namespace": "aws:elasticbeanstalk:application:environment",

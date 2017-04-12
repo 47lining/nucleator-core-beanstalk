@@ -106,7 +106,8 @@ class Beanstalk(Command):
         beanstalk_provision.add_argument("--database-password", required=False, help="Database password")
         beanstalk_provision.add_argument("--minscale", required=False, help="Minimum size of autoscaling group (default 1)")
         beanstalk_provision.add_argument("--maxscale", required=False, help="Maximum size of autoscaling group (default 4)")
-        beanstalk_provision.add_argument("--service-role", required=False, help="Role to associate with instance profile (default NucleatorBeanstalkServiceRunner)")
+        beanstalk_provision.add_argument("--instance-service-role", required=False, help="Role to associate with instance profile assigned to beanstalk instances (default NucleatorBeanstalkServiceRunner)")
+        beanstalk_provision.add_argument("--beanstalk-service-role", required=False, help="Role assumed by Elastic Beanstalk service to maintain and monitor environment (default NucleatorBeanstalkManager)")
         beanstalk_provision.add_argument("--queue-url", required=False, help="URL of the queue for the worker tier application to use instead of creating its own")
         beanstalk_provision.add_argument("--inactivity-timeout", required=False, help="Number of seconds for the inactivity timeout")
         beanstalk_provision.add_argument("--visibility-timeout", required=False, help="Number of seconds for the visibility timeout")
@@ -192,9 +193,13 @@ class Beanstalk(Command):
         print "inactivity_timeout = ", extra_vars["inactivity_timeout"]
         print "visibility_timeout = ", extra_vars["visibility_timeout"]
 
-        extra_vars["service_role"] = "NucleatorBeanstalkServiceRunner"
-        if kwargs.get("service_role", None) is not None:
-            extra_vars["service_role"] = kwargs.get("service_role")
+        extra_vars["instance_service_role"] = "NucleatorBeanstalkServiceRunner"
+        if kwargs.get("instance_service_role", None) is not None:
+            extra_vars["instance_service_role"] = kwargs.get("instance_service_role")
+
+        extra_vars["beanstalk_service_role"] = "aws-elasticbeanstalk-service-role" #"NucleatorBeanstalkManager"
+        if kwargs.get("beanstalk_service_role", None) is not None:
+            extra_vars["beanstalk_service_role"] = kwargs.get("beanstalk_service_role")
 
         minscale = kwargs.get("minscale", None)
         if minscale is None:
