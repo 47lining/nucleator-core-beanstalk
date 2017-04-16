@@ -356,6 +356,11 @@
 			}
                     },
                     {
+			"Namespace": "aws:elasticbeanstalk:environment",
+			"OptionName": "ServiceRole",
+			"Value": { "Ref":  "BeanstalkServiceRole" }
+                    },
+                    {
 			"Namespace": "aws:autoscaling:launchconfiguration",
 			"OptionName": "IamInstanceProfile",
 			"Value": { "Fn::If":  [ "CreateInstanceProfile", {"Ref" : "InstanceProfile"}, {"Ref" : "AWS::NoValue"}] }
@@ -455,13 +460,6 @@
                     "Ref": "BeanstalkApp"
                 },
                 "EnvironmentName": { "Ref": "EnvironmentName" },
-		"OptionSettings": [
-                    {
-			"Namespace": "aws:elasticbeanstalk:application:environment",
-			"OptionName": "ServiceRole",
-			"Value": { "Ref":  "BeanstalkServiceRole" }
-                    }
-		],
                 "Description": {
                     "Fn::Join": [
                         "",

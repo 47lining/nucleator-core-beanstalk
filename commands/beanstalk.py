@@ -58,7 +58,7 @@ class Beanstalk(Command):
         "ruby22_puma": ("64bit Amazon Linux 2016.03 v2.1.0 running Ruby 2.2 (Puma)",
                         "AWS Elastic Beanstalk Environment running Ruby Puma Sample Application",
                         "ruby-sample.zip"),
-        "tomcat8": ("64bit Amazon Linux 2016.03 v2.1.0 running Tomcat 8 Java 8",
+        "tomcat8": ("64bit Amazon Linux 2016.09 v2.5.4 running Tomcat 8 Java 8",
                     "AWS Elastic Beanstalk Environment running Tomcat 8 Java 8",
                     "elasticbeanstalk-sampleapp.war"),
                     # "java-tomcat-v1.zip"
